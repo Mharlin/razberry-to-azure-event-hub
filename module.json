@@ -1,0 +1,72 @@
+{
+    "dependencies": [],
+    "autoload": true,
+    "singleton": false,
+    "category": "support_external_dev",
+    "author": "Magnus Härlin",
+    "homepage": "https://gihub.com/Mharlin",
+    "icon": "icon.png",
+    "moduleName":"SensorValueLoggingAzureEventHub",
+    "version": "1.0.0",
+    "maturity": "stable",
+    "repository": {
+            "type": "git",
+            "source": "https://github.com/Mharlin/razberry-to-azure-event-hub"
+    },
+    "defaults": {
+        "title": "Sensor Value Logging to Azure Web Job",
+        "description": "Loggs sensor values to Azure Event Job",
+        "device": ""
+    },
+    "schema": {
+        "type": "object",
+        "properties": {
+            "device": {
+                "field": "enum",
+                "datasource": "namespaces",
+                "enum": "namespaces:devices_sensorBinary:deviceId,namespaces:devices_sensorMultilevel:deviceId,namespaces:devices_switchBinary:deviceId,namespaces:devices_switchMultilevel:deviceId,namespaces:devices_doorlock:deviceId,namespaces:devices_switchControl:deviceId, namespaces:devices_toggleButton:deviceId",
+                "required": true
+            },
+            "namespace": {
+            	"type": "string",
+            	"required": true
+            },
+            "hubName": {
+            	"type": "string",
+            	"required": true
+            },
+            "sharedAccessKeyName": {
+            	"type": "string",
+            	"required": true
+            },
+            "sharedAccessKey": {
+            	"type": "string",
+            	"required": true
+            }
+        },
+        "required": false
+    },
+    "options": {
+        "fields": {
+            "device": {
+                "label": "Sensor to log",
+                "datasource": "namespaces",
+                "field": "optionLabels",
+                "optionLabels": "namespaces:devices_sensorBinary:deviceName,namespaces:devices_sensorMultilevel:deviceName,namespaces:devices_switchBinary:deviceName,namespaces:devices_switchMultilevel:deviceName,namespaces:devices_doorlock:deviceName,namespaces:devices_switchControl:deviceName, namespaces:devices_toggleButton:deviceName"
+            },
+            "namespace": {
+            	"label": "Event Hub namespace"
+            },
+            "hubName": {
+            	"label": "Event Hub name"
+            },
+            "sharedAccessKeyName": {
+            	"label": "Shared access key name"
+            },
+            "sharedAccessKey": {
+            	"label": "shared access key"
+            }
+        }
+    }
+}
+
