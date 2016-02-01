@@ -50,10 +50,6 @@ SensorValueLoggingAzureEventHub.prototype.init = function (config) {
             value: vDev.get('metrics:level')
         });
 
-        var options = {
-            }
-        };
-
         var req = http.request({
             url: fullUri,
             method: 'POST',
