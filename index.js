@@ -9,17 +9,16 @@
      Log sensor values to Azure Event Hub
 
 ******************************************************************************/
-var https = require('https');
-var https = require('crypto');
+executeFile(enc-base64-min.js);
+executeFile(hmac-sha256.js);
 
 function create_sas_token(uri, key_name, key) {
     // Token expires in 24 hours
     var expiry = Math.floor(new Date().getTime() / 1000 + 3600 * 24);
 
     var string_to_sign = encodeURIComponent(uri) + '\n' + expiry;
-    var hmac = crypto.createHmac('sha256', key);
-    hmac.update(string_to_sign);
-    var signature = hmac.digest('base64');
+    var hmac = CryptoJS.HmacSHA256(string_to_sign, key);
+    var signature = CryptoJS.enc.Base64.stringify(hmac);
     var token = 'SharedAccessSignature sr=' + encodeURIComponent(uri) + '&sig=' + encodeURIComponent(signature) + '&se=' + expiry + '&skn=' + key_name;
 
     return token;
@@ -52,32 +51,19 @@ SensorValueLoggingAzureEventHub.prototype.init = function (config) {
         });
 
         var options = {
-            hostname: namespace + '.servicebus.windows.net',
-            port: 443,
-            path: '/' + hubname + '/publishers/' + devicename + '/messages',
+            }
+        };
+
+        var req = http.request({
+            url: fullUri,
             method: 'POST',
             headers: {
                 'Authorization': create_sas_token(fullUri, self.config.sharedAccessKeyName, self.config.shareAccessKey),
                 'Content-Length': deviceData.length,
                 'Content-Type': 'application/atom+xml;type=entry;charset=utf-8'
-            }
-        };
-
-        var req = https.request(options, function (res) {
-            console.log("statusCode: ", res.statusCode);
-            console.log("headers: ", res.headers);
-
-            res.on('data', function (d) {
-                process.stdout.write(d);
-            });
+            },
+            data: deviceData
         });
-
-        req.on('error', function (e) {
-            console.error(e);
-        });
-
-        req.write(deviceData);
-        req.end();
     };
 
     this.controller.devices.on(this.config.device, "change:metrics:level", this.handler);
