@@ -9,8 +9,8 @@
      Log sensor values to Azure Event Hub
 
 ******************************************************************************/
-executeFile(enc-base64-min.js);
 executeFile(hmac-sha256.js);
+executeFile(enc-base64-min.js);
 
 function create_sas_token(uri, key_name, key) {
     // Token expires in 24 hours
